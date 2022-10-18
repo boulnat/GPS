@@ -55,17 +55,15 @@ void onMqttMessage(int messageSize) {
   }
   Serial.println();
   rotation_value = mqttClient.read();
-  Serial.print("rotation value: ");
-  Serial.println(rotation_value);
-  position_sv = (1024 - rotation_value)/10; //unit: % (e.g. 0% ~ 0dg; 100% ~ 360dg)
+  position_sv = (360 - rotation_value)/10; //unit: % (e.g. 0% ~ 0dg; 100% ~ 360dg)
   position_pv = ((encoder_r+encoder_f)/2); //unit: %; encoder pulse per revolution: 200ppr
   
   if(position_pv-position_sv < 0){
-      runMotor();
+      runMotorBackward();
     }
     else{
       if(position_pv-position_sv > 0){
-        // run motor in opposite direction
+        runMotorForward();
       }
       else{
         //stop motor if position between +0 ~ -0
@@ -122,9 +120,14 @@ void setup() {
     tft.setSwapBytes(true);
 }
 
-void runMotor(){
+void runMotorForward(){
   digitalWrite(IN2, HIGH); 
   digitalWrite(IN1, LOW); 
+}
+
+void runMotorBackward(){
+  digitalWrite(IN2, LOW); 
+  digitalWrite(IN1, HIGH); 
 }
 
 void stopMotor(){
