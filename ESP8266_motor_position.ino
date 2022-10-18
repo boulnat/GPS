@@ -119,14 +119,7 @@ void setup() {
     // Swap the colour byte order when rendering
     tft.setSwapBytes(true);
 }
-/*
-void initMotor(){
-  while(!digitalRead(PINFEEDBACKYELLOW)){
-    analogWrite(PINFORWARDMOTOR, 125); 
-    Serial.println("OK"); 
-  }  
-} 
-*/
+
 void runMotor(){
   digitalWrite(IN2, HIGH); 
   digitalWrite(IN1, LOW); 
@@ -149,14 +142,14 @@ void detect_a_r() {
 }
 
 void detect_a_f() {
-  m_direction = digitalRead(pin_b); //read direction of motor
+  m_direction = digitalRead(PINFEEDBACKGREEN); //read direction of motor
   if(m_direction){
     encoder_f += 1; //increasing encoder at forward run
   }
   else{
     encoder_f += -1; //decreasing encoder at backward run
   }
-  attachInterrupt(digitalPinToInterrupt(PINFEEDBACKGREEN), detect_a_r, RISING);  //change interrupt to Rising edge
+  attachInterrupt(digitalPinToInterrupt(PINFEEDBACKYELLOW), detect_a_r, RISING);  //change interrupt to Rising edge
 }
 
 void loop() {
