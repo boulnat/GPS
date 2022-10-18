@@ -55,8 +55,8 @@ void onMqttMessage(int messageSize) {
   }
   Serial.println();
   rotation_value = mqttClient.read();
-  serial.print("rotation value: ");
-  serial.println(rotation_value);
+  Serial.print("rotation value: ");
+  Serial.println(rotation_value);
   position_sv = (1024 - rotation_value)/10; //unit: % (e.g. 0% ~ 0dg; 100% ~ 360dg)
   position_pv = ((encoder_r+encoder_f)/2); //unit: %; encoder pulse per revolution: 200ppr
   
