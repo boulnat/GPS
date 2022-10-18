@@ -160,9 +160,7 @@ void detect_a_f() {
 }
 
 void loop() {
-  
-
-  //delay(1000);
-  //mqttClient.poll();
-  //client.loop();
+  delay(1000);
+  mqttClient.poll();
+  client.loop();
 }
