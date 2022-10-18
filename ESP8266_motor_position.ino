@@ -54,7 +54,7 @@ void onMqttMessage(int messageSize) {
     Serial.print((char)mqttClient.read());
   }
   Serial.println();
-  rotation_value = mqttClient.read().toInt();
+  rotation_value = mqttClient.read();
   position_sv = (1024 - rotation_value)/10; //unit: % (e.g. 0% ~ 0dg; 100% ~ 360dg)
   position_pv = ((encoder_r+encoder_f)/2); //unit: %; encoder pulse per revolution: 200ppr
   
@@ -119,14 +119,7 @@ void setup() {
     // Swap the colour byte order when rendering
     tft.setSwapBytes(true);
 }
-/*
-void initMotor(){
-  while(!digitalRead(PINFEEDBACKYELLOW)){
-    analogWrite(PINFORWARDMOTOR, 125); 
-    Serial.println("OK"); 
-  }  
-} 
-*/
+
 void runMotor(){
   digitalWrite(IN2, HIGH); 
   digitalWrite(IN1, LOW); 
@@ -138,7 +131,7 @@ void stopMotor(){
 }
 
 void detect_a_r() {
-  m_direction = digitalRead(pin_b); //read direction of motor
+  m_direction = digitalRead(PINFEEDBACKGREEN); //read direction of motor
   if(!m_direction){
     encoder_r += 1;   //increasing encoder at forward run
   }
@@ -149,18 +142,18 @@ void detect_a_r() {
 }
 
 void detect_a_f() {
-  m_direction = digitalRead(pin_b); //read direction of motor
+  m_direction = digitalRead(PINFEEDBACKGREEN); //read direction of motor
   if(m_direction){
     encoder_f += 1; //increasing encoder at forward run
   }
   else{
     encoder_f += -1; //decreasing encoder at backward run
   }
-  attachInterrupt(digitalPinToInterrupt(PINFEEDBACKGREEN), detect_a_r, RISING);  //change interrupt to Rising edge
+  attachInterrupt(digitalPinToInterrupt(PINFEEDBACKYELLOW), detect_a_r, RISING);  //change interrupt to Rising edge
 }
 
 void loop() {
-  delay(1000);
+  //delay(1000);
   mqttClient.poll();
   client.loop();
 }
