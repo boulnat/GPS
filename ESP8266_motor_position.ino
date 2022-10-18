@@ -54,7 +54,7 @@ void onMqttMessage(int messageSize) {
     Serial.print((char)mqttClient.read());
   }
   Serial.println();
-  rotation_value = mqttClient.read().toInt();
+  rotation_value = mqttClient.read();
   position_sv = (1024 - rotation_value)/10; //unit: % (e.g. 0% ~ 0dg; 100% ~ 360dg)
   position_pv = ((encoder_r+encoder_f)/2); //unit: %; encoder pulse per revolution: 200ppr
   
@@ -138,7 +138,7 @@ void stopMotor(){
 }
 
 void detect_a_r() {
-  m_direction = digitalRead(pin_b); //read direction of motor
+  m_direction = digitalRead(PINFEEDBACKGREEN); //read direction of motor
   if(!m_direction){
     encoder_r += 1;   //increasing encoder at forward run
   }
@@ -160,7 +160,9 @@ void detect_a_f() {
 }
 
 void loop() {
-  delay(1000);
-  mqttClient.poll();
-  client.loop();
+  
+
+  //delay(1000);
+  //mqttClient.poll();
+  //client.loop();
 }
